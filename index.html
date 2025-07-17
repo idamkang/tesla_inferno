@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>탑승연애 신청서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a0933 0%, #2d1b3d 50%, #4a1942 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #ff69b4;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #e6e6fa;
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #ff69b4;
+            font-size: 1em;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ff69b4;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .required {
+            color: #ff1493;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e6e6fa;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff69b4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #c9c9c9;
+            opacity: 0.7;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            color: #e6e6fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            color: #ff69b4;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            transform: scale(1.2);
+            accent-color: #ff69b4;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            color: #e6e6fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            color: #ff69b4;
+        }
+
+        .radio-item input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+            transform: scale(1.2);
+            accent-color: #ff69b4;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff69b4, #9966cc);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+            background: linear-gradient(45deg, #ff1493, #8a2be2);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(255, 105, 180, 0.2);
+            border: 1px solid #ff69b4;
+            color: #ff69b4;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .heart-icon {
+            color: #ff69b4;
+            margin: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .checkbox-group,
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>탑승연애 <span class="heart-icon">💕</span></h1>
+            <p>새로운 만남을 위한 특별한 여행</p>
+            <p class="subtitle">진정한 사랑을 찾아 떠나는 로맨틱한 여정에 참여해보세요</p>
+        </div>
+
+        <form id="applicationForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">이름 <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="실명을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="age">나이 <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" required min="20" max="50" placeholder="만 나이">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gender">성별 <span class="required">*</span></label>
+                    <select id="gender" name="gender" required>
+                        <option value="">선택하세요</option>
+                        <option value="남성">남성</option>
+                        <option value="여성">여성</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="height">키 <span class="required">*</span></label>
+                    <input type="number" id="height" name="height" required min="150" max="200" placeholder="cm">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">연락처 <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678">
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일 <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="example@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="job">직업 <span class="required">*</span></label>
+                <input type="text" id="job" name="job" required placeholder="현재 직업을 입력하세요">
+            </div>
+
+            <div class="form-group">
+                <label for="location">거주지 <span class="required">*</span></label>
+                <input type="text" id="location" name="location" required placeholder="예: 서울시 강남구">
+            </div>
+
+            <div class="form-group">
+                <label>연애 경험 <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="exp1" name="dating_exp" value="연애 경험 없음" required>
+                        <label for="exp1">연애 경험 없음</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp2" name="dating_exp" value="1-2회" required>
+                        <label for="exp2">1-2회</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp3" name="dating_exp" value="3-5회" required>
+                        <label for="exp3">3-5회</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="exp4" name="dating_exp" value="6회 이상" required>
+                        <label for="exp4">6회 이상</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>관심사 (복수 선택 가능)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="travel" name="interests" value="여행">
+                        <label for="travel">여행</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="music" name="interests" value="음악">
+                        <label for="music">음악</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="movie" name="interests" value="영화">
+                        <label for="movie">영화</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="sports" name="interests" value="운동">
+                        <label for="sports">운동</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="food" name="interests" value="맛집탐방">
+                        <label for="food">맛집탐방</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="reading" name="interests" value="독서">
+                        <label for="reading">독서</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="cooking" name="interests" value="요리">
+                        <label for="cooking">요리</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="art" name="interests" value="예술">
+                        <label for="art">예술</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>이상형 연령대 <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="age1" name="ideal_age" value="20대 초반" required>
+                        <label for="age1">20대 초반</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="age2" name="ideal_age" value="20대 후반" required>
+                        <label for="age2">20대 후반</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="age3" name="ideal_age" value="30대 초반" required>
+                        <label for="age3">30대 초반</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="age4" name="ideal_age" value="30대 후반" required>
+                        <label for="age4">30대 후반</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="age5" name="ideal_age" value="상관없음" required>
+                        <label for="age5">상관없음</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="self_intro">자기소개 <span class="required">*</span></label>
+                <textarea id="self_intro" name="self_intro" rows="4" required
+                    placeholder="자신을 매력적으로 소개해주세요 (200자 이내)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ideal_type">이상형 <span class="required">*</span></label>
+                <textarea id="ideal_type" name="ideal_type" rows="3" required
+                    placeholder="어떤 분과 만나고 싶으신가요? (150자 이내)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="participation_reason">참가 이유 <span class="required">*</span></label>
+                <textarea id="participation_reason" name="participation_reason" rows="3" required
+                    placeholder="탑승연애에 참가하고 싶은 이유를 알려주세요 (150자 이내)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>방송 출연 동의 <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="agree_yes" name="broadcast_agree" value="동의" required>
+                        <label for="agree_yes">동의합니다</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="agree_no" name="broadcast_agree" value="미동의" required>
+                        <label for="agree_no">동의하지 않습니다</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="additional_info">추가 정보</label>
+                <textarea id="additional_info" name="additional_info" rows="3"
+                    placeholder="추가로 알리고 싶은 내용이 있다면 자유롭게 작성해주세요"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">💕 신청하기 💕</button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+            <span class="heart-icon">💕</span> 신청이 완료되었습니다!
+            <br>검토 후 연락드리겠습니다. 감사합니다! <span class="heart-icon">💕</span>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('applicationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // 폼 데이터 수집
+            const formData = new FormData(this);
+            const data = {};
+
+            // 일반 필드
+            for (let [key, value] of formData.entries()) {
+                if (key === 'interests') {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            // 체크박스 데이터 처리
+            const interests = [];
+            document.querySelectorAll('input[name="interests"]:checked').forEach(checkbox => {
+                interests.push(checkbox.value);
+            });
+            data.interests = interests;
+
+            console.log('탑승연애 신청 데이터:', data);
+
+            // 성공 메시지 표시
+            document.getElementById('successMessage').style.display = 'block';
+
+            // 폼 초기화
+            this.reset();
+
+            // 스크롤을 성공 메시지로 이동
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+
+            // 성공 메시지 5초 후 숨기기
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+
+        // 입력 필드 애니메이션 효과
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('focus', function () {
+                this.style.transform = 'scale(1.02)';
+            });
+
+            element.addEventListener('blur', function () {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // 텍스트 영역 글자 수 제한
+        document.getElementById('self_intro').addEventListener('input', function () {
+            if (this.value.length > 200) {
+                this.value = this.value.substring(0, 200);
+            }
+        });
+
+        document.getElementById('ideal_type').addEventListener('input', function () {
+            if (this.value.length > 150) {
+                this.value = this.value.substring(0, 150);
+            }
+        });
+
+        document.getElementById('participation_reason').addEventListener('input', function () {
+            if (this.value.length > 150) {
+                this.value = this.value.substring(0, 150);
+            }
+        });
+    </script>
+</body>
+
+</html>
